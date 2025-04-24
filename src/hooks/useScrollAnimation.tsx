@@ -1,36 +1,44 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 /**
- * Hook to animate elements when they enter the viewport
+ * Hook to animate elements on scroll
  * @param selector CSS selector for elements to animate
- * @param threshold IntersectionObserver threshold (0-1)
- * @param animationClass Class to add when element is in view
+ * @param threshold Intersection threshold (0-1)
  */
-export const useScrollAnimation = (
-  selector: string, 
-  threshold: number = 0.1, 
-  animationClass: string = 'animate-fade-up'
-) => {
+const useScrollAnimation = (selector: string, threshold = 0.1) => {
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add(animationClass);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold }
-    );
-
     const elements = document.querySelectorAll(selector);
-    elements.forEach((el) => observer.observe(el));
-
+    
+    if (elements.length === 0) return;
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Apply animation classes
+          entry.target.classList.add("animate-fade-up");
+          entry.target.classList.remove("opacity-0");
+          
+          // Unobserve after animation is applied
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { 
+      threshold, 
+      rootMargin: "0px 0px -100px 0px" // Start animation slightly before element is in view
+    });
+    
+    elements.forEach(el => {
+      // Set initial state
+      el.classList.add("opacity-0");
+      observer.observe(el);
+    });
+    
     return () => {
-      elements.forEach((el) => observer.unobserve(el));
+      elements.forEach(el => {
+        observer.unobserve(el);
+      });
     };
-  }, [selector, threshold, animationClass]);
+  }, [selector, threshold]);
 };
 
 export default useScrollAnimation;

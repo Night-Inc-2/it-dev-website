@@ -1,34 +1,88 @@
+import { useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 const CTASection = () => {
-  return (
-    <section className="py-24 bg-black relative overflow-hidden">
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_50%,rgba(128,0,255,0.2),transparent_70%)]"></div>
-        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_70%_80%,rgba(128,0,255,0.2),transparent_70%)]"></div>
-      </div>
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+  
+  // Scroll animation with Intersection Observer
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const animated = sectionRef.current?.querySelectorAll('.scroll-animate');
+          animated?.forEach(el => {
+            el.classList.add('animate-fade-up');
+            el.classList.remove('opacity-0');
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+  
+  // Parallax effect on scroll
+  useEffect(() => {
+    if (!ctaRef.current) return;
+    
+    const handleScroll = () => {
+      if (!ctaRef.current) return;
       
+      const scrollY = window.scrollY;
+      const sectionTop = ctaRef.current.getBoundingClientRect().top + scrollY;
+      const offset = (scrollY - sectionTop) * 0.1;
+      
+      if (offset > -100 && offset < 100) {
+        ctaRef.current.style.transform = `translateY(${offset}px)`;
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <section 
+      id="cta" 
+      ref={sectionRef}
+      className="py-24 bg-background relative overflow-hidden"
+    >
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-3xl mx-auto text-center scroll-animate opacity-0">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Готовы к технологиям будущего?</h2>
-          <p className="text-xl text-gray-300 mb-10">
-            Присоединяйтесь к тысячам компаний, которые уже используют наши решения для достижения новых высот.
-          </p>
+        <div 
+          ref={ctaRef}
+          className="max-w-4xl mx-auto glass-effect rounded-2xl p-8 md:p-12 border border-primary/10 relative overflow-hidden scroll-animate opacity-0"
+        >
+          {/* Decorative elements */}
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/20 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              className="rounded-full bg-white text-black hover:bg-white/90 transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-lg"
-            >
-              Начать сейчас
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline"
-              className="rounded-full border-white text-white hover:bg-white/10 transition-all duration-300 transform hover:translate-y-[-2px]"
-            >
-              Связаться с нами
-            </Button>
+          <div className="relative">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Готовы к следующему шагу <br />
+                в цифровой эволюции?
+              </h2>
+              <p className="text-lg text-card-foreground/80 max-w-2xl mx-auto">
+                Свяжитесь с нами для консультации или закажите демонстрацию продукта.
+                Наши эксперты помогут подобрать оптимальное решение для ваших задач.
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button size="lg" className="px-8 rounded-full w-full sm:w-auto">
+                Заказать демонстрацию
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="lg" className="px-8 rounded-full border-primary/30 w-full sm:w-auto">
+                Связаться с экспертом
+              </Button>
+            </div>
           </div>
         </div>
       </div>

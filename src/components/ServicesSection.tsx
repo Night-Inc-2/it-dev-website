@@ -1,8 +1,5 @@
-import { useEffect, useRef } from "react";
-import { 
-  Settings, Cloud, Shield, RotateCcw, Code, Star, 
-  Cpu, MonitorSmartphone, Network, Database, Headphones, Zap
-} from "lucide-react";
+import { useRef, useEffect } from "react";
+import { Shield, Cpu, CloudLightning, Code, AlarmCheck, Headphones } from "lucide-react";
 
 interface ServiceCardProps {
   icon: React.ReactNode;
@@ -12,132 +9,97 @@ interface ServiceCardProps {
 }
 
 const ServiceCard = ({ icon, title, description, index }: ServiceCardProps) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fade-up');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
-    return () => {
-      if (cardRef.current) {
-        observer.unobserve(cardRef.current);
-      }
-    };
-  }, []);
-
   return (
     <div 
-      ref={cardRef}
-      className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 opacity-0 group"
-      style={{ animationDelay: `${100 * index}ms` }}
+      className="group p-6 bg-card/50 border border-border/40 rounded-xl hover:border-primary/20 hover:bg-card/80 transition-all duration-300 scroll-animate opacity-0"
+      style={{ animationDelay: `${150 * index}ms` }}
     >
-      <div className="p-4 rounded-full inline-block bg-gray-100 dark:bg-gray-700 text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+      <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4 text-primary group-hover:scale-110 transition-transform duration-300">
         {icon}
       </div>
-      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">{title}</h3>
-      <p className="text-gray-600 dark:text-gray-300">{description}</p>
+      <h3 className="text-xl font-semibold mb-3">{title}</h3>
+      <p className="text-muted-foreground">{description}</p>
     </div>
   );
 };
 
 const ServicesSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-
+  
+  // Scroll animation with Intersection Observer
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fade-up');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
+    if (!sectionRef.current) return;
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const animated = sectionRef.current?.querySelectorAll('.scroll-animate');
+          animated?.forEach(el => {
+            el.classList.add('animate-fade-up');
+            el.classList.remove('opacity-0');
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
   }, []);
 
   const services = [
     {
-      icon: <Code className="h-6 w-6" />,
-      title: "Разработка ПО",
-      description: "Индивидуальная разработка программного обеспечения для ваших бизнес-задач."
-    },
-    {
-      icon: <Cloud className="h-6 w-6" />,
-      title: "Облачные решения",
-      description: "Интеграция и настройка облачных сервисов для оптимизации рабочих процессов."
-    },
-    {
       icon: <Shield className="h-6 w-6" />,
-      title: "IT-безопасность",
-      description: "Защита вашей инфраструктуры и данных от современных угроз."
+      title: "Безопасность уровня предприятия",
+      description: "Защита данных и устройств с использованием передовых технологий шифрования и биометрических систем."
     },
     {
       icon: <Cpu className="h-6 w-6" />,
-      title: "Аппаратные решения",
-      description: "Проектирование и внедрение серверных и компьютерных систем."
+      title: "Индивидуальная конфигурация",
+      description: "Создайте систему, отвечающую вашим конкретным потребностям, с оптимизированными компонентами."
     },
     {
-      icon: <MonitorSmartphone className="h-6 w-6" />,
-      title: "Разработка интерфейсов",
-      description: "Создание интуитивных и эффективных пользовательских интерфейсов."
+      icon: <CloudLightning className="h-6 w-6" />,
+      title: "Облачная интеграция",
+      description: "Бесшовное подключение к облачным сервисам для синхронизации данных и расширения возможностей."
     },
     {
-      icon: <Network className="h-6 w-6" />,
-      title: "Сетевая инфраструктура",
-      description: "Построение надежных и масштабируемых сетевых решений."
+      icon: <Code className="h-6 w-6" />,
+      title: "Программные решения",
+      description: "Разработка специализированного ПО для оптимизации бизнес-процессов и повышения эффективности."
     },
     {
-      icon: <Database className="h-6 w-6" />,
-      title: "Управление данными",
-      description: "Оптимизация хранения и обработки больших объемов информации."
+      icon: <AlarmCheck className="h-6 w-6" />,
+      title: "Расширенная гарантия",
+      description: "Комплексное обслуживание и расширенная гарантия для безотказной работы вашего оборудования."
     },
     {
       icon: <Headphones className="h-6 w-6" />,
-      title: "Техническая поддержка",
-      description: "Круглосуточная поддержка и быстрое решение проблем."
-    },
-    {
-      icon: <Zap className="h-6 w-6" />,
-      title: "Оптимизация производительности",
-      description: "Повышение скорости и эффективности работы ваших систем."
+      title: "Круглосуточная поддержка",
+      description: "Персональный менеджер и техническая поддержка 24/7 для оперативного решения задач."
     }
   ];
 
   return (
-    <section className="py-24 bg-gray-50 dark:bg-gray-900/50">
-      <div className="container mx-auto px-4">
-        <div 
-          ref={sectionRef} 
-          className="text-center mb-16 opacity-0"
-        >
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Наши услуги</h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Полный спектр IT-услуг для вашего бизнеса
+    <section 
+      id="services" 
+      ref={sectionRef}
+      className="py-20 bg-background relative overflow-hidden"
+    >
+      {/* Gradient background effect */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-16">
+          <h4 className="text-primary font-medium mb-2 text-sm md:text-base scroll-animate opacity-0">
+            НАШИ УСЛУГИ
+          </h4>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 scroll-animate opacity-0">
+            Полный спектр IT-решений
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto scroll-animate opacity-0">
+            Night предлагает комплексные услуги для бизнеса и частных клиентов, 
+            от настройки оборудования до разработки специализированных решений.
           </p>
         </div>
         
@@ -153,6 +115,9 @@ const ServicesSection = () => {
           ))}
         </div>
       </div>
+      
+      {/* Decorative element */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
     </section>
   );
 };

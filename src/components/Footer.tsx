@@ -1,110 +1,114 @@
-import { Link } from "react-router-dom";
-import { Laptop, Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import { Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-gray-900 text-gray-300 pt-24 pb-12">
+    <footer className="bg-card/30 border-t border-border/30 pt-16 pb-8">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          {/* Logo and info */}
           <div>
-            <Link to="/" className="flex items-center gap-2 mb-6">
-              <Laptop className="h-7 w-7 text-white" />
-              <span className="text-xl font-bold text-white">TechPro</span>
+            <Link to="/" className="flex items-center space-x-2 mb-4">
+              <span className="relative h-8 w-8">
+                <Shield className="h-8 w-8 text-primary" />
+              </span>
+              <span className="font-bold text-xl text-gradient">Night</span>
             </Link>
-            <p className="mb-6 text-gray-400">
-              Создаем технологии, которые меняют мир к лучшему. Инновации, качество, надежность.
+            <p className="text-muted-foreground mb-4">
+              Передовые технологии и инновационные решения для самых требовательных задач
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Linkedin className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Instagram className="h-5 w-5" />
-              </a>
-            </div>
-          </div>
-          
-          <div>
-            <h3 className="text-white text-lg font-semibold mb-6">Продукты</h3>
-            <ul className="space-y-3">
-              {["Ноутбуки", "Системы", "Серверы", "Аксессуары", "Программное обеспечение"].map(item => (
-                <li key={item}>
-                  <Link to="#" className="text-gray-400 hover:text-white transition-colors">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="text-white text-lg font-semibold mb-6">Компания</h3>
-            <ul className="space-y-3">
-              {["О нас", "Карьера", "Блог", "Партнеры", "Контакты"].map(item => (
-                <li key={item}>
-                  <Link to="#" className="text-gray-400 hover:text-white transition-colors">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="text-white text-lg font-semibold mb-6">Связаться с нами</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-gray-400 shrink-0 mt-0.5" />
-                <span>Москва, ул. Технологическая, 42</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-gray-400 shrink-0" />
-                <span>+7 (495) 123-45-67</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="h-5 w-5 text-gray-400 shrink-0" />
-                <span>info@techpro.ru</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        
-        {/* Newsletter */}
-        <div className="border-t border-gray-800 pt-12 pb-8 mb-8">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-white text-xl font-semibold mb-2">Подпишитесь на новости</h3>
-              <p className="text-gray-400">Будьте в курсе последних технологических новинок и предложений</p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <input 
-                type="email" 
-                placeholder="Ваш email" 
-                className="flex h-10 w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
-              />
-              <Button className="shrink-0 rounded-md">
-                Подписаться
+            <div className="flex space-x-3">
+              <Button variant="outline" size="icon" className="rounded-full w-8 h-8 p-0 border-primary/30">
+                <span className="sr-only">Twitter</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+              </Button>
+              <Button variant="outline" size="icon" className="rounded-full w-8 h-8 p-0 border-primary/30">
+                <span className="sr-only">LinkedIn</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+              </Button>
+              <Button variant="outline" size="icon" className="rounded-full w-8 h-8 p-0 border-primary/30">
+                <span className="sr-only">Instagram</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
               </Button>
             </div>
           </div>
+          
+          {/* Products */}
+          <div>
+            <h4 className="font-medium text-lg mb-4">Продукты</h4>
+            <ul className="space-y-3">
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Night Pro</a>
+              </li>
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Night Air</a>
+              </li>
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Night Studio</a>
+              </li>
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Аксессуары</a>
+              </li>
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Программное обеспечение</a>
+              </li>
+            </ul>
+          </div>
+          
+          {/* Company */}
+          <div>
+            <h4 className="font-medium text-lg mb-4">Компания</h4>
+            <ul className="space-y-3">
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">О нас</a>
+              </li>
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Карьера</a>
+              </li>
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Блог</a>
+              </li>
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Инвесторам</a>
+              </li>
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Устойчивое развитие</a>
+              </li>
+            </ul>
+          </div>
+          
+          {/* Support */}
+          <div>
+            <h4 className="font-medium text-lg mb-4">Поддержка</h4>
+            <ul className="space-y-3">
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Контакты</a>
+              </li>
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Служба поддержки</a>
+              </li>
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Центры обслуживания</a>
+              </li>
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Гарантия</a>
+              </li>
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">FAQ</a>
+              </li>
+            </ul>
+          </div>
         </div>
         
-        {/* Copyright */}
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-500 text-sm">
-            © 2023 TechPro. Все права защищены.
-          </p>
-          <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-            <Link to="#" className="hover:text-white transition-colors">Условия использования</Link>
-            <Link to="#" className="hover:text-white transition-colors">Политика конфиденциальности</Link>
-            <Link to="#" className="hover:text-white transition-colors">Политика cookie</Link>
+        <div className="border-t border-border/30 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
+          <p>© {currentYear} Night. Все права защищены.</p>
+          <div className="flex space-x-6 mt-4 md:mt-0">
+            <a href="#" className="hover:text-primary transition-colors">Конфиденциальность</a>
+            <a href="#" className="hover:text-primary transition-colors">Условия использования</a>
+            <a href="#" className="hover:text-primary transition-colors">Политика cookie</a>
           </div>
         </div>
       </div>

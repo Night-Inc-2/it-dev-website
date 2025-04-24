@@ -1,100 +1,109 @@
 import { useEffect, useRef } from "react";
-import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ArrowRight, ChevronDown } from "lucide-react";
 
 const HeroSection = () => {
-  const parallaxRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const parallaxElements = useRef<NodeListOf<Element> | null>(null);
   
+  // Smooth scroll to section when clicking the scroll indicator
+  const scrollToProducts = () => {
+    const productsSection = document.getElementById("products");
+    if (productsSection) {
+      productsSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  // Parallax effect on mouse movement
   useEffect(() => {
+    if (!heroRef.current) return;
+    
+    parallaxElements.current = heroRef.current.querySelectorAll(".parallax-element");
+    
     const handleMouseMove = (e: MouseEvent) => {
-      const parallaxItems = document.querySelectorAll('.parallax-item');
+      if (!parallaxElements.current) return;
       
-      parallaxItems.forEach((item) => {
-        const speed = parseFloat((item as HTMLElement).dataset.speed || "0.05");
-        const x = (window.innerWidth - e.pageX * speed) / 100;
-        const y = (window.innerHeight - e.pageY * speed) / 100;
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      
+      parallaxElements.current.forEach((el) => {
+        const depth = parseFloat(el.getAttribute("data-depth") || "0.1");
+        const moveX = (x - 0.5) * depth * 50;
+        const moveY = (y - 0.5) * depth * 50;
         
-        (item as HTMLElement).style.transform = `translateX(${x}px) translateY(${y}px)`;
+        (el as HTMLElement).style.transform = `translate(${moveX}px, ${moveY}px)`;
       });
     };
     
-    document.addEventListener('mousemove', handleMouseMove);
-    
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-    };
+    document.addEventListener("mousemove", handleMouseMove);
+    return () => document.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-      {/* Background elements */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/4 left-1/3 w-64 h-64 bg-blue-100 dark:bg-blue-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 parallax-item" data-speed="0.03"></div>
-        <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-purple-100 dark:bg-purple-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 parallax-item" data-speed="0.05"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-pink-100 dark:bg-pink-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 parallax-item" data-speed="0.07"></div>
+    <section 
+      ref={heroRef}
+      className="relative min-h-screen pt-20 overflow-hidden night-gradient flex flex-col items-center justify-center"
+    >
+      {/* Background orbs */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div 
+          className="absolute top-1/4 -left-20 w-64 h-64 rounded-full bg-purple-500/10 blur-3xl parallax-element animate-float"
+          data-depth="0.2"
+        ></div>
+        <div 
+          className="absolute bottom-1/4 -right-32 w-96 h-96 rounded-full bg-blue-500/10 blur-3xl parallax-element animate-float delay-500"
+          data-depth="0.3"
+        ></div>
+        <div 
+          className="absolute top-3/4 left-1/4 w-48 h-48 rounded-full bg-indigo-500/10 blur-3xl parallax-element animate-float delay-300"
+          data-depth="0.1"
+        ></div>
       </div>
-
-      <div className="container mx-auto px-4 z-10 pt-16 md:pt-0">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="max-w-xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 opacity-0 animate-fade-up">
-              <span className="block">Будущее технологий</span>
-              <span className="block mt-2">уже здесь</span>
-            </h1>
-            
-            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 opacity-0 animate-fade-up delay-150">
-              Инновационные системы и ноутбуки, разработанные для новой эры цифровых возможностей.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-up delay-300">
-              <Button 
-                size="lg" 
-                className="rounded-full group transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-lg"
-              >
-                Узнать больше 
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Button>
-              
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="rounded-full transition-all duration-300 transform hover:translate-y-[-2px]"
-              >
-                Наши продукты
-              </Button>
-            </div>
-          </div>
-          
-          <div ref={parallaxRef} className="relative select-none pointer-events-none opacity-0 animate-fade-up delay-500">
-            <div className="relative z-10 transform transition-transform duration-700 hover:scale-105 parallax-item" data-speed="0.02">
-              <img 
-                src="/placeholder.svg" 
-                alt="Современный ноутбук" 
-                className="w-full h-auto rounded-xl shadow-2xl"
-                style={{
-                  filter: "drop-shadow(0 20px 30px rgba(0, 0, 0, 0.15))"
-                }}
-              />
-              
-              {/* Floating elements */}
-              <div className="absolute -top-6 -right-6 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-xl animate-float parallax-item" data-speed="0.07">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">+120%</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">производительность</div>
-              </div>
-              
-              <div className="absolute -bottom-6 -left-6 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-xl animate-float parallax-item delay-700" data-speed="0.05" style={{animationDelay: "1s"}}>
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">24ч</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">автономность</div>
-              </div>
-            </div>
-          </div>
-        </div>
+      
+      {/* Content */}
+      <div className="container mx-auto px-4 z-10 flex flex-col items-center text-center">
+        <h4 className="text-primary font-medium mb-4 text-sm md:text-base animate-fade-up opacity-0 [animation-delay:150ms]">
+          ИННОВАЦИИ В КАЖДОМ УСТРОЙСТВЕ
+        </h4>
+        <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-tight lg:leading-tight mb-6 animate-fade-up opacity-0 [animation-delay:300ms]">
+          <span className="block">Будущее технологий</span>
+          <span className="block text-gradient">в ваших руках</span>
+        </h1>
+        <p className="text-foreground/70 max-w-2xl mx-auto mb-8 text-lg animate-fade-up opacity-0 [animation-delay:450ms]">
+          Night создает передовые ноутбуки и системы с лучшими технологиями,
+          дизайном и производительностью — для тех, кто требует большего.
+        </p>
         
-        {/* Scroll indicator */}
-        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 opacity-0 animate-fade-up delay-700">
-          <div className="w-8 h-12 rounded-full border-2 border-gray-400 dark:border-gray-600 flex justify-center pt-2">
-            <div className="w-1 h-3 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce"></div>
-          </div>
+        <div className="flex flex-col sm:flex-row gap-4 mt-4 animate-fade-up opacity-0 [animation-delay:600ms]">
+          <Button size="lg" className="px-8 rounded-full">
+            Исследовать продукты
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+          <Button variant="outline" size="lg" className="px-8 rounded-full border-primary/30">
+            Подробнее о Night
+          </Button>
+        </div>
+      </div>
+      
+      {/* Scroll indicator */}
+      <button 
+        onClick={scrollToProducts}
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-80 hover:opacity-100 transition-opacity animate-fade-up opacity-0 [animation-delay:900ms]"
+      >
+        <span className="text-sm text-foreground/60 mb-2">Прокрутите вниз</span>
+        <ChevronDown className="h-6 w-6 text-primary animate-bounce" />
+      </button>
+      
+      {/* Product image */}
+      <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 w-full max-w-3xl animate-fade-up opacity-0 [animation-delay:750ms]">
+        <div className="relative w-full aspect-[16/9] parallax-element animate-float" data-depth="0.05">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/90 z-10"></div>
+          <img 
+            src="/placeholder.svg" 
+            alt="Night Laptop Pro" 
+            className="w-full h-auto object-cover opacity-90"
+          />
+          <div className="absolute inset-0 animate-glow rounded-2xl opacity-30"></div>
         </div>
       </div>
     </section>
