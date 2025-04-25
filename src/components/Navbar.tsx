@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Laptop, Shield, Code, MenuIcon, X } from "lucide-react";
+import { Laptop, Moon, Code, MenuIcon, X, Star } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
@@ -45,7 +45,8 @@ const Navbar = () => {
           className="flex items-center space-x-2 group"
         >
           <span className="relative h-8 w-8 animate-slow-spin">
-            <Shield className="h-8 w-8 absolute text-primary transform rotate-0" />
+            <Moon className="h-8 w-8 absolute text-primary transform rotate-0" fill="rgba(156, 135, 245, 0.2)" />
+            <span className="absolute h-1 w-1 rounded-full bg-white top-2 right-2.5 animate-pulse"></span>
             <span className="absolute inset-0 opacity-60 blur-md bg-primary rounded-full animate-pulse"></span>
           </span>
           <span className="font-bold text-2xl tracking-tight text-gradient font-sf text-foreground">
@@ -116,7 +117,7 @@ const Navbar = () => {
           </Button>
           <Button variant="ghost" className="justify-start" asChild>
             <Link to="#services" onClick={() => setIsOpen(false)}>
-              <Shield className="mr-2 h-4 w-4 text-primary" />
+              <Star className="mr-2 h-4 w-4 text-primary" />
               Услуги
             </Link>
           </Button>
@@ -128,7 +129,7 @@ const Navbar = () => {
           </Button>
           <Button variant="ghost" className="justify-start" asChild>
             <Link to="#about" onClick={() => setIsOpen(false)}>
-              <Code className="mr-2 h-4 w-4 text-primary" />
+              <Moon className="mr-2 h-4 w-4 text-primary" fill="rgba(156, 135, 245, 0.2)" />
               О нас
             </Link>
           </Button>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Shield } from "lucide-react";
+import { Moon } from "lucide-react";
 
 const LoadingScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,8 +34,12 @@ const LoadingScreen = () => {
     >
       <div className="flex flex-col items-center">
         <div className="relative">
-          <Shield className="h-16 w-16 text-primary animate-pulse" />
-          <span className="absolute inset-0 blur-md bg-primary/30 rounded-full animate-pulse"></span>
+          <div className="relative h-16 w-16 flex items-center justify-center">
+            <Moon className="h-14 w-14 text-primary absolute animate-pulse" fill="rgba(156, 135, 245, 0.3)" />
+            <span className="absolute inset-0 rounded-full animate-ping opacity-75 bg-primary/20" style={{ animationDuration: "3s" }}></span>
+            <span className="absolute inset-0 blur-md bg-primary/30 rounded-full animate-pulse"></span>
+            <span className="absolute h-2 w-2 rounded-full bg-white top-3 right-4 animate-pulse"></span>
+          </div>
         </div>
         
         <h1 className="text-3xl font-bold mt-8 mb-6 text-gradient">Night</h1>

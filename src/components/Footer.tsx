@@ -1,4 +1,4 @@
-import { Shield } from "lucide-react";
+import { Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -13,7 +13,8 @@ const Footer = () => {
           <div>
             <Link to="/" className="flex items-center space-x-2 mb-4">
               <span className="relative h-8 w-8">
-                <Shield className="h-8 w-8 text-primary" />
+                <Moon className="h-8 w-8 text-primary" fill="rgba(156, 135, 245, 0.2)" />
+                <span className="absolute h-1 w-1 rounded-full bg-white top-2 right-2.5"></span>
               </span>
               <span className="font-bold text-xl text-gradient">Night</span>
             </Link>
